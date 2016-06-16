@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "查詢結果";
+}
+
+<div style="margin-top:100px">
+        <table border="1">
+            <tr class="info">
+                <td style="background-color:#00994C; color:white; text-align:center;">訂單編號</td>
+                <td style="background-color:#00994C; color:white; text-align:center;">客戶名稱</td>
+                <td style="background-color:#00994C; color:white; text-align:center;">訂購日期</td>
+                <td style="background-color:#00994C; color:white; text-align:center;">發貨日期</td>
+            </tr>
+            @foreach (var @item in (List<Test.Models.Order>)@ViewBag.result)
+            {
+                <tr style="height:30px">
+                    <td>@item.OrderId</td>
+                    <td>@item.CustName</td>
+                    <td>@item.Orderdate</td>
+                    <td>@item.ShippedDate</td>
+                    <td><a onclick="Delete(@item.OrderId, this)">刪除</a></td>
+                </tr>
+            }
+        </table>
+</div>
+<script>
+    var Delete = function (OrderId, item) {
+        $.ajax({
+            url: "/Order/Delete",
+            method: "POST",
+            dataType: "json",
+            data: {
+                OrderID: OrderId
+            },
+            success: function (respone) {
+                $('#msg_user_name').html(response);
+            },
+            error: function(xml){
+            }
+        });
+            $(item).parent().parent().remove();
+    }
+</script>

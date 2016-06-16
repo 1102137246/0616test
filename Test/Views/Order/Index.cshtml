@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "訂單查詢";
+}
+<div style="margin-top:100px">
+    <form action="/Order/Result" method="post">
+        <table border="1">
+            <tr>
+                <td>訂單編號</td>
+                <td colspan="3"><input type="text" class="k-input" id="OrderId" name="OrderId"></td>
+            </tr>
+            <tr>
+                <td>客戶名稱</td>
+                <td colspan="3"><input type="text" class="k-input" id="CustName" name="CustName"></td>
+            </tr>
+            <tr>
+                <td>負責員工</td>
+                <td colspan="3"><input id="EmpId" name="EmpId"></td>
+            </tr>
+            <tr>
+                <td>出貨公司</td>
+                <td colspan="3"><input id="ShipperId" name="ShipperId"></td>
+            </tr>
+            <tr>
+                <td>訂購日期</td>
+                <td><input type="date" id="Orderdate" name="Orderdate"></td>
+                <td>出貨日期</td>
+                <td><input type="date" id="ShippedDate" name="ShippedDate"></td>
+            </tr>
+            <tr>
+                <td>需要日期</td>
+                <td colspan="3"><input type="date" id="RequireDate" name="RequireDate"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="3">
+                    <input type="submit" id="submit" value="查詢" />
+                    <input type="reset" id="reset" value="清除" />
+                    <input type="button" id="insert" value="新增訂單" onclick="location.href='/Order/Insert'"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div id="json"></div>
+</div>
+<script>
+    $("#submit").kendoButton();
+    $("#reset").kendoButton();
+    $("#insert").kendoButton();
+    $("#Orderdate").kendoDatePicker();
+    $("#ShippedDate").kendoDatePicker();
+    $("#RequireDate").kendoDatePicker();
+    $('document').ready(function () {
+        $.ajax({
+            method: "GET",
+            url: "/Order/DataPackage",
+            dataType: "json",
+            success: function (msg) {
+                var emp = msg[0];
+                var ship = msg[1];
+                //$('#json').text(JSON.stringify(emp) + JSON.stringify(ship));
+                $('#EmpId').kendoComboBox({
+                    dataTextField: "EmpName",
+                    dataValueField: "EmpId",
+                    dataSource: emp,
+                });
+                $('#ShipperId').kendoComboBox({
+                    dataTextField: "ShipperName",
+                    dataValueField: "ShipperId",
+                    dataSource: ship,
+                });
+            },
+            error: function () {
+            }
+        });
+    });
+    
+
+
+</script>

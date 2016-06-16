@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "新增訂單";
+}
+<div style="margin-top:100px">
+    <form action="/Order/Insert" method="post">
+        <h2>新增訂單</h2>
+        <table border="1">
+            <tr>
+                <td>客戶名稱</td>
+                <td colspan="3"><input type="text" class="k-input" id="CustName" name="CustName"></td>
+            </tr>
+            <tr>
+                <td>負責員工名稱</td>
+                <td colspan="3"><input id="EmpId" name="EmpId"></td>
+            </tr>
+            <tr>
+                <td>訂單日期</td>
+                <td><input type="date" id="Orderdate" name="Orderdate"></td>
+                <td>需要日期</td>
+                <td><input type="date" id="RequireDate" name="RequireDate"></td>
+            </tr>
+            <tr>
+                <td>出貨日期</td>
+                <td colspan="3"><input type="date" id="ShippedDate" name="ShippedDate"></td>
+            </tr>
+            <tr>
+                <td>出貨公司名稱</td>
+                <td colspan="3"><input id="ShipperId" name="ShipperId"></td>
+            </tr>
+            <tr>
+                <td>運費</td>
+                <td colspan="3"><input type="text" id="Freight" name="Freight" class="k-input"></td>
+            </tr>
+            <tr>
+                <td>出貨國家</td>
+                <td><input type="text" id="ShipCountry" name="ShipCountry" class="k-input"></td>
+                <td>出貨城市</td>
+                <td><input type="text" id="ShipCity" name="ShipCity" class="k-input"></td>
+            </tr>
+            <tr>
+                <td>出貨地區</td>
+                <td><input type="text" id="ShipRegion" name="ShipRegion" class="k-input"></td>
+                <td>郵遞區號</td>
+                <td><input type="text" id="ShipPostalCode" name="ShipPostalCode" class="k-input"></td>
+            </tr>
+            <tr>
+                <td>出貨地址</td>
+                <td><input type="text" id="ShipAddress" name="ShipAddress" class="k-input"></td>
+                <td>出貨說明</td>
+                <td><input type="text" id="ShipName" name="ShipName" class="k-input"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="3">
+                    <input type="submit" id="submit" value="存檔" />
+                    <input type="reset" id="reset" value="清除" />
+                    <input type="button" id="insert" value="回前一頁" onclick="location.href='/Order/Index'" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script>
+    $('#submit').kendoButton();
+    $('#reset').kendoButton();
+    $('#insert').kendoButton();
+    $('#Orderdate').kendoDatePicker();
+    $('#RequireDate').kendoDatePicker();
+    $('#ShippedDate').kendoDatePicker();
+    $('document').ready(function () {
+        $.ajax({
+            method: "GET",
+            url: "/Order/DataPackage",
+            dataType: "json",
+            success: function (msg) {
+                var emp = msg[0];
+                var ship = msg[1];
+                var cust = msg[2];
+                //$('#json').text(JSON.stringify(emp) + JSON.stringify(ship));
+                $('#EmpId').kendoComboBox({
+                    dataTextField: "EmpName",
+                    dataValueField: "EmpId",
+                    dataSource: emp,
+                });
+                $('#ShipperId').kendoComboBox({
+                    dataTextField: "ShipperName",
+                    dataValueField: "ShipperId",
+                    dataSource: ship,
+                });
+                $('#CustName').kendoComboBox({
+                    dataTextField: "CustName",
+                    dataValueField: "CustId",
+                    dataSource: cust,
+                });
+            },
+            error: function () {
+            }
+        });
+    });
+
+
+</script>
